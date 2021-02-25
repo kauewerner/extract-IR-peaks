@@ -49,8 +49,8 @@ def list_files(directory,extension):
 
 def create_figure (data,xPeak,yPeak,fileName,outFolder,figdip=72,marker='ob'):
     outFigureFolder = 'figures'
-    if not os.path.isdir('.\\'+outFolder+'\\'+outFigureFolder) :
-        os.mkdir('.\\'+outFolder+'\\'+outFigureFolder)
+    if not os.path.isdir('./'+outFolder+'/'+outFigureFolder) :
+        os.mkdir('./'+outFolder+'/'+outFigureFolder)
         print("\nINFO: A new directory was created for the figures: ./"+ outFolder+"/"+outFigureFolder)
     plt.figure(1,figsize=(15,9),dpi=figdip)
     plt.plot(data[0][:],data[1][:],'-r')
@@ -60,7 +60,7 @@ def create_figure (data,xPeak,yPeak,fileName,outFolder,figdip=72,marker='ob'):
     plt.ylim((0.0,1.0))
     plt.ylabel('absorption',fontsize='xx-large')
     plt.tick_params(labelsize='xx-large')
-    plt.savefig('.\\'+outFolder+'\\'+outFigureFolder+'\\'+fileName)
+    plt.savefig('./'+outFolder+'/'+outFigureFolder+'/'+fileName)
     plt.clf()
     return 0
 
@@ -68,7 +68,7 @@ def extract_peaks(filesList,outFolder,ampThreshold,invertAmp=['none'],peakDistan
     for f in filesList :  
         
         # read jdx file
-        IRdata = JCAMP_reader('.\\input_IR\\'+f)
+        IRdata = JCAMP_reader('./input_IR/'+f)
         
         # extract wave number (x) and amplitude information (y)
         IRgraph = np.zeros([2,len(IRdata["x"])])
@@ -99,7 +99,7 @@ def extract_peaks(filesList,outFolder,ampThreshold,invertAmp=['none'],peakDistan
         
         
         # write output files
-        if not os.path.isdir('.\\'+outFolder) :
+        if not os.path.isdir('./'+outFolder) :
             os.mkdir(outFolder)
             print("\nINFO: A new directory was created for the csv results: ./"+outFolder)
             
@@ -107,7 +107,7 @@ def extract_peaks(filesList,outFolder,ampThreshold,invertAmp=['none'],peakDistan
         if exportFigures :
             create_figure(IRgraph,x,y,f[:-3],outFolder)
             
-        with open('.\\'+ outFolder +'\\'+ f[:-3] +'csv', 'w') as fw:
+        with open('./'+ outFolder +'/'+ f[:-3] +'csv', 'w') as fw:
             writer = csv.writer(fw, delimiter=csvDelimiter)
             writer.writerows(zip(x,y))
             
@@ -135,7 +135,7 @@ def main(argv):
     peakDistance = 1 if not args.peakDistance else args.peakDistance
     csvDelimiter = ',' if not args.csvDelimiter else args.csvDelimiter
     
-    fileNames = list_files(os.getcwd()+'\\'+ inFolder,inputFormat)
+    fileNames = list_files(os.getcwd()+'/'+ inFolder,inputFormat)
     extract_peaks(fileNames,outFolder,ampThr,invertAmp=invAmp,exportFigures=exportFigures,peakDistance=peakDistance,csvDelimiter=csvDelimiter)
     
 if __name__ == "__main__":
